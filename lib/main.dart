@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/component/util.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,95 +10,110 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter good',
+      title: 'Flutter Calculator',
+      debugShowCheckedModeBanner:false,
       theme: ThemeData(
         
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.green,
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Calculadora com Flutter'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-   final String title;
+  var teste = new util();
+  MyHomePage(){
+    teste.numeroUm = 0;
+    teste.numeroDois = 0;
+    teste.soma = 0;
+    teste.numeroTeste=0;
+  }
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int soma = 0;
-  int numeroUm=0;
-  int numeroDois=0;
 
 
-  void  somar(int numeroUm, int numeroDois) {
-    setState(() {
-      soma = numeroUm + numeroDois;
-     
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
    
     return Scaffold(
-      appBar: AppBar(
-        
-        title: Text(widget.title),
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+        title: Text('Calculadora'),
       ),
-      body: Center(
-        
-        child: Column(
-          
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'digite o primeiro numero:',
-            ),
-            TextField(
-              onChanged: (Text){
-                numeroUm = int.parse(Text);
-              },
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: '00 '
-              ),
-            ),
-            
-             Text(
-              'digite o segundo numero:',
-            ),
+      body: new Container(
 
-            TextField(
-              onChanged: (Text){
-                numeroDois = int.parse(Text);
-              },
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: '00 '
+          padding: const EdgeInsets.all(40.0),
+
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+
+              Image.asset(
+                'img/logo.png',
               ),
-            ),
-            
-            Text(
-              '$soma',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            RaisedButton(
-            onPressed: () {
-              somar(numeroUm,numeroDois);
-            },
-              child: const Text('somar', style: TextStyle(fontSize: 20)),
+              new TextField(
+                decoration: new InputDecoration(labelText: "Primeiro Numero"),
+                keyboardType: TextInputType.number,
+                  onChanged: (text) {
+                    setState(() {
+                      widget.teste.numeroUm  = int.parse(text);
+                  });
+                }
+              ),
+              new TextField(
+                decoration: new InputDecoration(labelText: "Segundo Numero"),
+                keyboardType: TextInputType.number,
+                  onChanged: (text) {
+                       setState(() {
+                      widget.teste.numeroDois = int.parse(text);
+                        });
+               }
+
+                // Only numbers can be entered
+              ),
+
+              IconButton(
+                  icon: Icon(Icons.add_box_sharp),
+                  onPressed: () {
+                    setState(() {
+
+                      widget.teste.somar( widget.teste.numeroUm, widget.teste.numeroDois);
+                    });
+                  }
+              ),IconButton(
+                  icon: Icon(Icons.wine_bar),
+                  onPressed: () {
+                    setState(() {
+
+                      widget.teste.subtrair( widget.teste.numeroUm, widget.teste.numeroDois);
+                    });
+                  }
+              ),
+              Text( widget.teste.soma.toString()),
+//              Text( widget.teste.numeroTeste.toString()),
+
+            ],
+
+
           ),
-          ],
-        ),
       ),
-      
+//teste com float button ->achar algo legal para fazer com isso
+//      floatingActionButton: FloatingActionButton(
+//        onPressed: () => setState(() => widget.teste.numeroTeste++),
+//        tooltip: 'Increment Counter',
+//        child: const Icon(Icons.add),
+//      ),
     );
+      
+
   }
 }
+
